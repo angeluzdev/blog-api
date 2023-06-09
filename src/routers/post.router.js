@@ -12,6 +12,16 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/labels/:id', async(req, res, next) => {
+  try {
+    const {id} = req.params;
+    const labelsPost = await service.getLabelsByPostId(id);
+    res.json(labelsPost);
+  } catch (error) {
+    next(error);
+  }
+})
+
 router.get('/:search', async (req, res, next) => {
   try {
     const {search} = req.params;
@@ -41,10 +51,29 @@ router.post('/add', async (req, res, next) => {
   }
 })
 
+router.post('/labels/add', async (req, res, next) => {
+  try {
+    const message = await service.insertPostLabels(req.body);
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+})
+
 router.delete('/delete/:id', async (req, res, next) => {
   try {
     const {id} = req.params;
     const message = await service.deletePost(id);
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+})
+
+router.delete('/label/delete/:id', async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const message = await service.deleteLabelOfPostById(id);
     res.json(message);
   } catch (error) {
     next(error);
