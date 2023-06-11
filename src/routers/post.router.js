@@ -1,5 +1,7 @@
 const express = require('express');
 const PostService = require('./../services/post.service');
+const validateData = require('./../middlewares/data.handler');
+const { schemaBody, schemaId, schemaLabelBody, schemaSearch,schemaDeleteLabel } = require('./../schemas/post.schema');
 const service = new PostService();
 const router = express.Router();
 
@@ -12,7 +14,17 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/labels/:id', async(req, res, next) => {
+router.get('/:id', validateData('params', schemaId),async (req,res,next) => {
+  try {
+    const {id} = req.params;
+    const post = await service.getPostById(id);
+    res.json(post);
+  } catch (error) {
+    next(error);
+  }
+})
+
+router.get('/labels/:id', validateData('params', schemaId),async(req, res, next) => {
   try {
     const {id} = req.params;
     const labelsPost = await service.getLabelsByPostId(id);
@@ -22,7 +34,7 @@ router.get('/labels/:id', async(req, res, next) => {
   }
 })
 
-router.get('/:search', async (req, res, next) => {
+router.get('/:search', validateData('params',schemaSearch),async (req, res, next) => {
   try {
     const {search} = req.params;
     const posts = await service.getPostsBySearch(search);
@@ -32,7 +44,7 @@ router.get('/:search', async (req, res, next) => {
   }
 })
 
-router.get('/category/:id', async (req, res, next) => {
+router.get('/category/:id', validateData('params', schemaId),async (req, res, next) => {
   try {
     const {id} = req.params;
     const posts = await service.getPostsByCategoryId(id);
@@ -42,7 +54,7 @@ router.get('/category/:id', async (req, res, next) => {
   }
 })
 
-router.post('/add', async (req, res, next) => {
+router.post('/add', validateData('body', schemaBody),async (req, res, next) => {
   try {
     const message = await service.insertPost(req.body);
     res.json(message);
@@ -51,7 +63,7 @@ router.post('/add', async (req, res, next) => {
   }
 })
 
-router.post('/labels/add', async (req, res, next) => {
+router.post('/labels/add', validateData('body', schemaLabelBody),async (req, res, next) => {
   try {
     const message = await service.insertPostLabels(req.body);
     res.json(message);
@@ -60,7 +72,7 @@ router.post('/labels/add', async (req, res, next) => {
   }
 })
 
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', validateData('params', schemaId),async (req, res, next) => {
   try {
     const {id} = req.params;
     const message = await service.deletePost(id);
@@ -70,10 +82,10 @@ router.delete('/delete/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/label/delete/:id', async (req, res, next) => {
+router.delete('/label/delete', validateData('body', schemaDeleteLabel),async (req, res, next) => {
   try {
-    const {id} = req.params;
-    const message = await service.deleteLabelOfPostById(id);
+    const {id, idPost} = req.body;
+    const message = await service.deleteLabelOfPostById(id, idPost);
     res.json(message);
   } catch (error) {
     next(error);

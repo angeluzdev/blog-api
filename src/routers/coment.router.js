@@ -1,9 +1,11 @@
 const express = require('express');
 const Coment = require('./../services/coment.service');
+const validateData = require('./../middlewares/data.handler');
+const { schemaId, schemabody } = require('./../schemas/coment.schema');
 const service = new Coment();
 const router = express.Router();
 
-router.get('/:id', async (req,res,next) => {
+router.get('/:id', validateData('params', schemaId),async (req,res,next) => {
   try {
     const {id} = req.params;
     const coments = await service.getComentsByPostId(id);
@@ -13,7 +15,7 @@ router.get('/:id', async (req,res,next) => {
   }
 })
 
-router.post('/add', async (req, res, next) => {
+router.post('/add', validateData('body', schemabody),async (req, res, next) => {
   try {
     const message = await service.insertComent(req.body);
     res.json(message);
@@ -22,7 +24,7 @@ router.post('/add', async (req, res, next) => {
   }
 })
 
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', validateData('params',schemaId),async (req, res, next) => {
   try {
     const {id} = req.params;
     const message = await service.deleteComent(id);

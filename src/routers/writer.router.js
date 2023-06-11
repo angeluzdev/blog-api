@@ -1,5 +1,7 @@
 const express = require('express');
 const WriterService = require('./../services/writer.service');
+const validateData = require('./../middlewares/data.handler');
+const { schemaBody, schemaId } = require('./../schemas/writer.schema');
 const service = new WriterService();
 const router = express.Router();
 
@@ -12,7 +14,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', validateData('params', schemaId),async (req, res, next) => {
   try {
     const {id} = req.params;
     const writer = await service.getWriterById(id);
@@ -22,7 +24,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/add', async (req, res, next) => {
+router.post('/add', validateData('body', schemaBody),async (req, res, next) => {
   try {
     const message = await service.insertWriter(req.body);
     res.json(message);
@@ -31,7 +33,7 @@ router.post('/add', async (req, res, next) => {
   }
 })
 
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', validateData('params', schemaId),async (req, res, next) => {
   try {
     const {id} = req.params;
     const message = await service.deleteWriter(id);
