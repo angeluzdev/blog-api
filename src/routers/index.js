@@ -5,6 +5,7 @@ const postRouter = require('./post.router');
 const writerRouter = require('./writer.router');
 const comentRouter = require('./coment.router');
 const userRouter = require('./user.router');
+const authRouter = require('./auth.router');
 
 function setRouters(app) {
   const router = express.Router();
@@ -15,6 +16,7 @@ function setRouters(app) {
   router.use('/writers', writerRouter);
   router.use('/coments', comentRouter);
   router.use('/profile', userRouter);
+  router.use('/auth', authRouter);
 }
 
 

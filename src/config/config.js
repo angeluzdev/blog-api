@@ -5,7 +5,8 @@ const config = {
   dbName: process.env.DATABASE_NAME,
   dbHost: process.env.DATABASE_HOST,
   dbPass: process.env.DATABASE_PASS,
-  dbUser: process.env.DATABASE_USER
+  dbUser: process.env.DATABASE_USER,
+  secretKey: process.env.SECRET_KEY
 };
 
 module.exports = config;

@@ -1,30 +1,34 @@
 const express = require('express');
 const User = require('./../services/user.service');
 const validateData = require('./../middlewares/data.handler');
-const { schemaBody, schemaBodyPostFavorite, schemaId } = require('./../schemas/user.schema');
+const { schemaBodyPostFavorite, schemaId } = require('./../schemas/user.schema');
+const { isAuthenticate } = require('./../middlewares/auth.handler');
+const passport = require('passport');
 const service = new User();
 const router = express.Router();
 
-router.get('/:id', validateData('params', schemaId),async (req, res, next) => {
+router.get('/',isAuthenticate,async (req, res, next) => {
   try {
-    const {id} = req.params;
-    const posts = await service.getPostsByUserId(id);
+    const {sub} = req.user;
+    const posts = await service.getPostsByUserId(sub);
     res.json(posts);
   } catch (error) {
     next(error);
   }
 })
 
-router.post('/add', validateData('body', schemaBodyPostFavorite),async (req,res,next) => {
+router.post('/add', isAuthenticate, validateData('body', schemaBodyPostFavorite), passport.authenticate('jwt', {session: false}),async (req,res,next) => {
   try {
-    const message = await service.insertPostFavorite(req.body);
+    const data = {user_id: req.user.sub, post_id:req.body.post_id};
+    console.log(data);
+    const message = await service.insertPostFavorite(data);
     res.json(message);
   } catch (error) {
     next(error);
   }
 })
 
-router.delete('/delete/:id', validateData('params', schemaId),async (req,res,next) => {
+router.delete('/delete/:id', isAuthenticate, validateData('params', schemaId),async (req,res,next) => {
   try {
     const {id} = req.params;
     const message = await service.deletePostFavorite(id);
