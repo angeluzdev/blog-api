@@ -1,7 +1,6 @@
 const express = require('express');
 const parser = require('cookie-parser');
-const doten = require('dotenv');
-const path = require('path');
+const cors = require('cors');
 const setRouters = require('./routers');
 const passport = require('passport');
 const { isBoomError, internalError } = require('./middlewares/error.handler');
@@ -12,6 +11,7 @@ app.set('port', process.env.PORT || 3000);
 
 //middlewares 
 app.use(express.json());
+app.use(cors());
 app.use(parser());
 require('./utils/auth');
 app.use((req,res,next)=>passport.authenticate('jwt', {session:false}, function(err,user,info,status) {
