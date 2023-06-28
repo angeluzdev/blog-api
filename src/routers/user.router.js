@@ -11,13 +11,16 @@ router.get('/',isAuthenticate,async (req, res, next) => {
   try {
     const {sub} = req.user;
     const posts = await service.getPostsByUserId(sub);
-    res.json(posts);
+    res.json({
+      username: req.user.username,
+      posts
+    });
   } catch (error) {
     next(error);
   }
 })
 
-router.post('/add', isAuthenticate, validateData('body', schemaBodyPostFavorite), passport.authenticate('jwt', {session: false}),async (req,res,next) => {
+router.post('/add', isAuthenticate, validateData('body', schemaBodyPostFavorite), async (req,res,next) => {
   try {
     const data = {user_id: req.user.sub, post_id:req.body.post_id};
     console.log(data);
@@ -31,7 +34,11 @@ router.post('/add', isAuthenticate, validateData('body', schemaBodyPostFavorite)
 router.delete('/delete/:id', isAuthenticate, validateData('params', schemaId),async (req,res,next) => {
   try {
     const {id} = req.params;
-    const message = await service.deletePostFavorite(id);
+    const data = {
+      user_id: req.user.sub,
+      post_id: id
+    }
+    const message = await service.deletePostFavorite(data);
     res.json(message);
   } catch (error) {
     next(error);

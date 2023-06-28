@@ -1,6 +1,8 @@
 const boom = require('@hapi/boom');
 const pool = require('./../database');
 const bcrypt = require('bcrypt');
+const PostService = require('./post.service');
+const service = new PostService();
 
 class User {
 
@@ -18,7 +20,12 @@ class User {
 
   async getPostsByUserId(id) {
     const [posts] = await pool.query('select * from favorites_posts where user_id=?', [id]);
-    return posts;
+    const postsInfo = [];
+    for(let i=0; i<posts.length; i++) {
+      const postInfo = await service.getPostById(posts[i].post_id);
+      postsInfo.push(postInfo[0]);
+    }
+    return postsInfo;
   }
   
   async getUserByEmail(email) {
@@ -28,14 +35,18 @@ class User {
   }
 
   async insertPostFavorite(data) {
+    const [post] = await pool.query('select * from favorites_posts where post_id=? and user_id=?', [data.post_id, data.user_id]);
+    
+    if(post[0]) throw boom.badRequest('the post is already in favorites');
+
     const [infoInsert] = await pool.query('insert into favorites_posts set ?', [data]);
     return {message:'success', newId:infoInsert.insertId};
   }
 
-  async deletePostFavorite(id) {
-    const [infoDelete] = await pool.query('delete from favorites_posts where id=?', [id]);
+  async deletePostFavorite(data) {
+    const [infoDelete] = await pool.query('delete from favorites_posts where post_id=? and user_id=?', [data.post_id, data.user_id]);
     if(infoDelete.affectedRows==0) throw boom.notFound('Id inexistente');
-    return{message:'success', deletedId: id};
+    return{message:'success'};
   }
 }
 
