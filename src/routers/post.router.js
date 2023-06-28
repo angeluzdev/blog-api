@@ -14,6 +14,16 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/favorites', async (req,res, next) => {
+  try {
+    let posts = await service.getPosts();
+    posts = posts.sort((a,b) => b.likes - a.likes);
+    res.json(posts.slice(0,2));
+  } catch (error) {
+    next(error);
+  }
+})
+
 router.get('/:id', validateData('params', schemaId),async (req,res,next) => {
   try {
     const {id} = req.params;
@@ -34,7 +44,7 @@ router.get('/labels/:id', validateData('params', schemaId),async(req, res, next)
   }
 })
 
-router.get('/:search', validateData('params',schemaSearch),async (req, res, next) => {
+router.get('/search/:search', validateData('params',schemaSearch),async (req, res, next) => {
   try {
     const {search} = req.params;
     const posts = await service.getPostsBySearch(search);
@@ -90,6 +100,12 @@ router.delete('/label/delete', validateData('body', schemaDeleteLabel),async (re
   } catch (error) {
     next(error);
   }
+})
+
+router.patch('/view/:id', async (req, res, next) => {
+  const {id} = req.params;
+  await service.setViewsOfPost(id);
+  res.sendStatus(200);
 })
 
 module.exports = router;

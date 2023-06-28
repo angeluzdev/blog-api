@@ -8,7 +8,9 @@ const schemaBody = Joi.object({
   title: Joi.string().max(50).required(),
   content: Joi.string().required(),
   writer_id: Joi.number().integer().min(1).required(),
-  category_id: Joi.number().integer().min(1).required()
+  category_id: Joi.number().integer().min(1).required(),
+  likes: Joi.number().integer().min(0),
+  views: Joi.number().integer().min(0)
 })
 
 const schemaSearch = Joi.object({

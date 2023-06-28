@@ -5,7 +5,8 @@ const connection = mysql.createPool({
   host: config.dbHost,
   user: config.dbUser,
   database: config.dbName,
-  password: config.dbPass
+  password: config.dbPass,
+  port: config.dbPort
 })
 
 connection.getConnection((err, connection) => {
