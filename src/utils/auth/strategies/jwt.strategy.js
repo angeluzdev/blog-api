@@ -7,7 +7,7 @@ const cookieExtractor = (req) => {
 }
 
 const JwtStrategy = new Strategy({
-  jwtFromRequest: cookieExtractor,
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: config.secretKey
 }, (payload, done) => {
   return done(null, payload);

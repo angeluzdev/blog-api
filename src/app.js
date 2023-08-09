@@ -23,6 +23,7 @@ require('./utils/auth');
 app.use((req,res,next)=>passport.authenticate('jwt', {session:false}, function(err,user,info,status) {
   req.user=user;
   console.log(req.cookies);
+  console.log(req.headers.authorization)
   next();
 })(req,res,next));
 
