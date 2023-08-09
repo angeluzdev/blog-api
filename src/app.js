@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname,'public')));
 app.use(cors({
   credentials: true,
-  origin: 'http://127.0.0.1:5500'
+  origin: 'https://blog-front-eight-pi.vercel.app'
 }));
 
 app.use(parser());
