@@ -14,7 +14,7 @@ class Post {
     return posts;
   }
 
-  async getPostById(id) {
+  async getPostById(id, userId) {
     const [post] = await pool.query('select * from posts where id=?', [id]);
     if(post.length==0) throw boom.notFound('Id inexistente');
 
@@ -22,6 +22,14 @@ class Post {
     const {labels} = await this.getLabelsByPostId(id);
     post[0].writer = writer[0];
     post[0].labels = labels;
+
+    if(userId) {
+      const [posFav] = await pool.query('select * from favorites_posts where user_id=? and post_id=?', [userId, id]);
+      posFav[0] ? post[0].isFav = true : post[0].isFav = false;
+      const [postLike] = await pool.query('select * from like_posts where user_id=? and post_id=?', [userId, id]);
+      postLike[0] ? post[0].isLike = true : post[0].isLike = false;
+    }
+    
     return post;
   }
 

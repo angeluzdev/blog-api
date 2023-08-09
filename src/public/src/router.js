@@ -1,17 +1,17 @@
 window.addEventListener('DOMContentLoaded', selectViewChange, false);
 window.addEventListener('hashchange', selectViewChange, false);
 
-function selectViewChange() {
+async function selectViewChange() {
+  const isAuth = await isAuthenticate();
   if(location.hash.startsWith('#category=')) {
-    console.log('seccion categorias');
     showViewForPostByCategory();
   } else if(location.hash.startsWith('#post=')) {
     showViewPostSelected();
-  } else if(location.hash.startsWith('#signup')){
+  } else if(location.hash.startsWith('#signup') && !isAuth){
     showViewSignUp();
-  } else if(location.hash.startsWith('#signin')){
+  } else if(location.hash.startsWith('#signin') && !isAuth){
     showViewSignIn();
-  } else if(location.hash.startsWith('#profile')) {
+  } else if(location.hash.startsWith('#profile') && isAuth) {
     showViewProfile();
   } else if(location.hash.startsWith('#search=')) {
     showViewSearch();
@@ -55,12 +55,12 @@ function showViewPostSelected() {
 
 function showViewSignIn() {
   sectionsDisplay();
-  sectionSignIn.style.display = 'block';
+  sectionSignIn.style.display = 'flex';
 }
 
 function showViewSignUp() {
   sectionsDisplay();
-  sectionSignUp.style.display = 'block';
+  sectionSignUp.style.display = 'flex';
 }
 
 function showViewProfile() {

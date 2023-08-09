@@ -11,7 +11,7 @@ const logOutButton = document.querySelector('#logout');
 const formSignin = document.querySelector('.section__signin form');
 const formSignup = document.querySelector('.section__signup form')
 const userElement = document.querySelector('.profile__w span');
-const profileSection = document.querySelector('.profile__posts-favorites');
+const profileSection = document.querySelector('.posts__content');
 
 const mainBanner = document.querySelector('#main__banner');
 const sectionPostsFavoritesContainer = document.querySelector('.section-post-favorites');
@@ -22,3 +22,8 @@ const sectionSignIn = document.querySelector('.section__signin');
 const sectionSignUp = document.querySelector('.section__signup');
 const sectionProfile = document.querySelector('#profile');
 const optionNav = document.querySelector('#options-nav');
+
+const messageIn = document.querySelector('#message-in');
+const messageUp = document.querySelector('#message-up');
+const iconHeart = document.querySelector('.fa-heart');
+const iconFav = document.querySelector('.fa-bookmark');

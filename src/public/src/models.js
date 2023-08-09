@@ -45,7 +45,7 @@ const createPosts = (data, section) => {
   });
 
   section.append(...elementsHTML);
-}
+} 
 
 const createPostsV = (data, section) => {
   const elementsHTML = [];
@@ -129,8 +129,9 @@ async function getPostsByCategoryId(id) {
 }
 
 async function showPostByCategoryId(id) {
-  const response = await fetch(`${URL_API}posts/${id}`);
+  const response = await fetch(`${URL_API}posts/${id}`, {headers: {'Authorization': `Bearer ${document.cookie.split('=')[1]}`}});
   const data = await response.json();
+  console.log(data);
   const {labels} = data[0];
   const fecha = new Date(data[0].created_at).toLocaleDateString();
   const HTML = `
@@ -148,11 +149,11 @@ async function showPostByCategoryId(id) {
         </div>
       </div>
 
-      <div class="meta__favorites">
+      <div class="meta__favorites ${data[0].isLike ? 'select-like':''}" onclick="toggleLikePost()">
         <i class="fa-solid fa-heart"></i> Likes (${data[0].likes})
       </div>
 
-      <div class="meta__save" onclick="toggleNewPost()">
+      <div class="meta__save ${data[0].isFav ? 'select-fav': ''}" onclick="toggleNewPost()">
         <i class="fa-sharp fa-regular fa-bookmark" title="añadir a favoritos"></i>
       </div>
     </div>

@@ -34,6 +34,10 @@ nav {
   border: none;
   border-radius: 10px;
 }
+a {
+  text-decoration: none;
+  color: black;
+}
 
 #options-nav {
   display: flex;
@@ -41,6 +45,9 @@ nav {
 }
 #options-nav li{
   list-style: none;
+}
+#icon-user {
+  cursor: pointer;
 }
 
 #main__banner {
@@ -59,12 +66,12 @@ nav {
 
 .section-post-favorites h3, .section-post-now h3 {
   font-size: 24px;
-  margin: 10px;
+  padding: 14px 5px;
 }
 .container-posts {
   display: flex;
-  height: 330px;
-  padding: 0 10px;
+  height: 350px;
+  padding: 10px 10px;
   margin-bottom: 20px;
   gap: 20px;
   overflow-x: auto;
@@ -192,6 +199,13 @@ nav {
     color: #5CB85C;
     border: 1px solid #5CB85C;
     border-radius: 14px;
+    cursor: pointer;
+}
+.post-selected .select-fav {
+  background-color: #daa52052;
+}
+.post-selected .select-like {
+  background-color: #5cb85c70;
 }
 .post-selected__header .post-selected__meta .meta__save {
   width: 30px;
@@ -200,6 +214,7 @@ nav {
   color: goldenrod;
   border-radius: 50%;
   border: 1px solid gold;
+  cursor: pointer;
 }
 .post-selected__header .post-selected__meta .saved {
   background-color: rgba(255, 217, 0, 0.172);
@@ -215,7 +230,7 @@ nav {
 }
 
 .section__signup, .section__signin {
-  margin-top: 60px;
+  padding: 50px 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -267,8 +282,20 @@ nav {
   display: flex;
   justify-content: center;
   gap: 10px;
+  cursor: pointer;
 }
-.profile__posts-favorites .post {
+
+.profile__posts-user .posts__header {
+  margin-top: 40px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+}
+.profile__posts-user .posts__header > div {
+  cursor: pointer;
+}
+.posts__content .post {
   max-width: 270px;
   min-width: 200px;
   height: 330px;
@@ -277,21 +304,31 @@ nav {
   overflow: hidden;
 }
 
-.profile__posts-favorites {
+.posts__content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-items: center;
   gap: 17px;
 }
-.profile__posts-favorites .post img {
+.posts__content .post img {
   width: 100%;
 }
-.profile__posts-favorites .post_info {
+.posts__content .post_info {
   height: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 15px;
 }
+
+#icon-fav {
+  color: gold;
+  font-size: 32px;
+}
+#icon-heart {
+  color: crimson;
+  font-size: 32px;
+}
+
 .width-all {
   min-width: 370px;
   max-width: 1150px;

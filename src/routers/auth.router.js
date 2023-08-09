@@ -11,11 +11,10 @@ router.get('/', async (req,res, next) => {
       isAuth: false
     }
     if(req.user) {
-      console.log('si auth')
       response.isAuth = true;
       return res.json(response);
     }
-    console.log('no auth', response);
+    
     return res.json(response);
   } catch (error) {
     next(error);

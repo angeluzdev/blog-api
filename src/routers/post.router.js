@@ -27,7 +27,7 @@ router.get('/favorites', async (req,res, next) => {
 router.get('/:id', validateData('params', schemaId),async (req,res,next) => {
   try {
     const {id} = req.params;
-    const post = await service.getPostById(id);
+    const post = await service.getPostById(id, req.user.sub);
     res.json(post);
   } catch (error) {
     next(error);
