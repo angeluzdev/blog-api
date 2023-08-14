@@ -1,7 +1,7 @@
 const express = require('express');
 const PostService = require('./../services/post.service');
 const validateData = require('./../middlewares/data.handler');
-const { schemaBody, schemaId, schemaLabelBody, schemaSearch,schemaDeleteLabel } = require('./../schemas/post.schema');
+const { schemaBody, schemaId, schemaLabelBody, schemaSearch,schemaDeleteLabel, schemaLimitPost } = require('./../schemas/post.schema');
 const service = new PostService();
 const router = express.Router();
 
@@ -14,11 +14,11 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/favorites', async (req,res, next) => {
+router.get('/favorites', validateData('query', schemaLimitPost),async (req,res, next) => {
   try {
-    let posts = await service.getPosts();
-    posts = posts.sort((a,b) => b.likes - a.likes);
-    res.json(posts.slice(0,2));
+    const limit = parseInt(req.query.limit) || 6;
+    let posts = await service.getPostsMoreVoted(limit);
+    res.json(posts);
   } catch (error) {
     next(error);
   }

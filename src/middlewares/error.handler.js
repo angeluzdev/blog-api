@@ -8,7 +8,8 @@ function isBoomError(error, req, res, next) {
 
 function internalError(error, req, res, next) {
   res.status(500).json({
-    message: error.message
+    statusCode: 500,
+    error: error.message
   })
 }
 

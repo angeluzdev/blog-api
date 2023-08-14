@@ -14,6 +14,11 @@ class Post {
     return posts;
   }
 
+  async getPostsMoreVoted(limit) {
+    const [posts] = await pool.query("select * from posts order by likes desc limit ?", [limit]);
+    return posts;
+  }
+
   async getPostById(id, userId) {
     const [post] = await pool.query('select * from posts where id=?', [id]);
     if(post.length==0) throw boom.notFound('Id inexistente');

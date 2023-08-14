@@ -27,4 +27,8 @@ const schemaDeleteLabel = Joi.object({
   idPost: Joi.number().integer().min(1).required()
 })
 
-module.exports = {schemaBody, schemaId, schemaLabelBody, schemaSearch, schemaDeleteLabel};
+const schemaLimitPost = Joi.object({
+  limit: Joi.number().integer().min(1)
+})
+
+module.exports = {schemaBody, schemaId, schemaLabelBody, schemaSearch, schemaDeleteLabel, schemaLimitPost};
